@@ -1,0 +1,312 @@
+# Домашнее задание
+
+## Задача 1
+
+Необходимо создать интерфейс PersonInterface с методом getInfo().\
+Создать абстрактный класс Person, который будет реализовывать интерфейс PersonInterface и иметь свойства name и age.\
+Создать класс Student, наследующий класс Person и реализующий метод getInfo().\
+Класс Student должен иметь свойство major (специализация), которое устанавливается через конструктор.
+
+## Решение
+
+```php
+interface PersonInterface {
+  public function getInfo();
+}
+
+abstract class Person implements PersonInterface {
+  // Свойства класса
+  protected $name;
+  protected $age;
+
+  // Конструктор класса
+  public function __construct($name, $age) {
+    $this->name = $name;
+    $this->age = $age;
+  }
+
+  // Методы класса
+  public function getInfo() {
+    return "Имя: " . $this->name . ", Возраст: " . $this->age;
+  }
+}
+
+class Student extends Person {
+  // Свойства класса
+  private $major;
+
+  // Конструктор класса
+  public function __construct($name, $age, $major) {
+    parent::__construct($name, $age);
+    $this->major = $major;
+  }
+
+  // Методы класса
+  public function getInfo() {
+    return parent::getInfo() . ", Специализация: " . $this->major;
+  }
+}
+
+// Создадим объект класса Student и выведем его информацию
+$student = new Student("Иван", 20, "Программирование");
+echo $student->getInfo();
+
+```
+
+## Задача 2
+
+Реализуйте абстрактный класс Vehicle(транспортное средство) с защищенными свойствами brand и model, абстрактным методом getInfo() и общим методом startEngine().
+
+Реализуйте интерфейс ElectricVehicle с методами setBatteryLife() и getBatteryLife().
+
+Создайте класс Car, наследующийся от Vehicle и реализующий интерфейс ElectricVehicle. \
+В классе Car реализуйте методы getInfo(), setBatteryLife() и getBatteryLife().
+
+## Решение
+
+```php
+// Абстрактный класс Vehicle
+abstract class Vehicle {
+  protected $brand;
+  protected $model;
+
+  // Абстрактный метод getInfo()
+  abstract public function getInfo();
+
+  // Общий метод startEngine()
+  public function startEngine() {
+    echo "Запуск двигателя";
+  }
+}
+
+// Интерфейс ElectricVehicle
+interface ElectricVehicle {
+  public function setBatteryLife($life);
+  public function getBatteryLife();
+}
+
+// Класс Car, наследующийся от Vehicle и реализующий ElectricVehicle
+class Car extends Vehicle implements ElectricVehicle {
+  private $batteryLife;
+
+  // Реализация метода getInfo()
+  public function getInfo() {
+    return "Марка: " . $this->brand . ", Модель: " . $this->model;
+  }
+
+  // Реализация метода setBatteryLife()
+  public function setBatteryLife($life) {
+    $this->batteryLife = $life;
+  }
+
+  // Реализация метода getBatteryLife()
+  public function getBatteryLife() {
+    return $this->batteryLife;
+  }
+}
+
+// Создаем объект класса Car
+$electricCar = new Car();
+$electricCar->brand = "Tesla";
+$electricCar->model = "Model S";
+
+// Устанавливаем значение заряда батареи и выводим его на экран
+$electricCar->setBatteryLife(80);
+echo "Заряд батареи: " . $electricCar->getBatteryLife() . "%<br>";
+
+// Выводим информацию о машине
+echo $electricCar->getInfo() . "<br>";
+
+// Запускаем двигатель
+$electricCar->startEngine();
+
+```
+
+
+## Задача 3
+
+Необходимо создать класс Calculator, который будет иметь методы для основных математических операций (сложение, вычитание, умножение, деление). \
+Класс должен реализовывать интерфейс MathOperations, который определяет методы для математических операций, и абстрактный класс BaseCalculator, который содержит общие методы для всех калькуляторов.
+
+## Решение
+
+```php
+<?php
+
+// Определяем интерфейс MathOperations
+interface MathOperations {
+  public function add($a, $b);
+  public function subtract($a, $b);
+  public function multiply($a, $b);
+  public function divide($a, $b);
+}
+
+// Определяем абстрактный класс BaseCalculator
+abstract class BaseCalculator {
+  protected $lastResult;
+
+  public function getLastResult() {
+    return $this->lastResult;
+  }
+}
+
+// Создаем класс Calculator, который реализует интерфейс MathOperations и наследует абстрактный класс BaseCalculator
+class Calculator extends BaseCalculator implements MathOperations {
+  public function add($a, $b) {
+    $this->lastResult = $a + $b;
+    return $this->lastResult;
+  }
+
+  public function subtract($a, $b) {
+    $this->lastResult = $a - $b;
+    return $this->lastResult;
+  }
+
+  public function multiply($a, $b) {
+    $this->lastResult = $a * $b;
+    return $this->lastResult;
+  }
+
+  public function divide($a, $b) {
+    if ($b == 0) {
+      throw new Exception('Division by zero');
+    }
+    $this->lastResult = $a / $b;
+    return $this->lastResult;
+  }
+}
+
+// Используем класс Calculator для выполнения математических операций
+$calculator = new Calculator();
+$calculator->add(5, 10);
+echo "Результат сложения: " . $calculator->getLastResult() . "<br>";
+$calculator->subtract(10, 5);
+echo "Результат вычитания: " . $calculator->getLastResult() . "<br>";
+$calculator->multiply(5, 10);
+echo "Результат умножения: " . $calculator->getLastResult() . "<br>";
+$calculator->divide(10, 2);
+echo "Результат деления: " . $calculator->getLastResult() . "<br>";
+
+```
+
+## Задача 4
+
+Необходимо:
+
+* Реализовать абстрактный класс BankAccount с защищенными свойствами баланса и имени владельца, конструктором и методами получения баланса и внесения денег на счет.\
+* Определить абстрактный метод для снятия денег со счета.
+
+* Создать два класса, наследующихся от абстрактного класса BankAccount - CheckingAccount и SavingsAccount.\
+* Каждый класс должен иметь свои уникальные свойства и метод снятия денег.
+
+* Создать интерфейс Transferable с методом для перевода денег с одного счета на другой.
+
+* Создать класс Bank, в котором будут храниться объекты счетов. \
+Реализовать методы для добавления нового счета, перевода денег со счета на счет и получения всех счетов.
+
+* Создать два объекта счетов - CheckingAccount и SavingsAccount. Вывести информацию о счетах до и после перевода денег со сберегательного счета на текущий.
+
+## Решение
+
+```php
+<?php
+
+// Абстрактный класс банковского счета
+abstract class BankAccount {
+  protected float $balance;
+  protected string $ownerName;
+
+  public function __construct(string $ownerName, float $balance = 0) {
+    $this->balance = $balance;
+    $this->ownerName = $ownerName;
+  }
+
+  public function getBalance(): float {
+    return $this->balance;
+  }
+
+  public function deposit(float $amount): void {
+    $this->balance += $amount;
+  }
+
+  abstract public function withdraw(float $amount): void;
+}
+
+// Класс для чекового счета
+class CheckingAccount extends BankAccount {
+  private float $fee;
+
+  public function __construct(string $ownerName, float $balance = 0, float $fee = 0) {
+    parent::__construct($ownerName, $balance);
+    $this->fee = $fee;
+  }
+
+  public function withdraw(float $amount): void {
+    $this->balance -= $amount + $this->fee;
+  }
+}
+
+// Класс для сберегательного счета
+class SavingsAccount extends BankAccount {
+  private float $interestRate;
+
+  public function __construct(string $ownerName, float $balance = 0, float $interestRate = 0) {
+    parent::__construct($ownerName, $balance);
+    $this->interestRate = $interestRate;
+  }
+
+  public function withdraw(float $amount): void {
+    if ($this->balance - $amount >= 0) {
+      $this->balance -= $amount;
+    } else {
+      throw new Exception("Недостаточно средств");
+    }
+  }
+
+  public function addInterest(): void {
+    $this->balance += $this->balance * ($this->interestRate / 100);
+  }
+}
+
+// Интерфейс для перевода денег с одного счета на другой
+interface Transferable {
+  public function transfer(float $amount, BankAccount $account): void;
+}
+
+// Класс для банка
+class Bank {
+  private array $accounts;
+
+  public function __construct() {
+    $this->accounts = [];
+  }
+
+  public function addAccount(BankAccount $account): void {
+    $this->accounts[] = $account;
+  }
+
+  public function transfer(float $amount, BankAccount $account1, BankAccount $account2): void {
+    $account1->withdraw($amount);
+    $account2->deposit($amount);
+  }
+
+  public function getAccounts(): array {
+    return $this->accounts;
+  }
+}
+
+// Создаем объекты счетов
+$checking = new CheckingAccount("Иван Сергеев", 1000, 10);
+$savings = new SavingsAccount("Анна Петрова", 5000, 5);
+
+// Выводим информацию о счетах до операций
+echo $checking->getInfo() . "<br>";
+echo $savings->getInfo() . "<br>";
+
+// Переводим деньги со сберегательного счета на текущий
+$savings->transferTo($checking, 2000);
+
+// Выводим информацию о счетах после операций
+echo $checking->getInfo() . "<br>";
+echo $savings->getInfo() . "<br>";
+```
