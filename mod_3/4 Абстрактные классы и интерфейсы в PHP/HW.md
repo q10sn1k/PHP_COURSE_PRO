@@ -65,50 +65,67 @@ echo $student->getInfo();
 ## Решение
 
 ```php
+<?php
 // Абстрактный класс Vehicle
 abstract class Vehicle {
-  protected $brand;
-  protected $model;
+    protected $brand;
+    protected $model;
 
-  // Абстрактный метод getInfo()
-  abstract public function getInfo();
+    // Абстрактный метод getInfo()
+    abstract public function getInfo();
 
-  // Общий метод startEngine()
-  public function startEngine() {
-    echo "Запуск двигателя";
-  }
+    // Общий метод startEngine()
+    public function startEngine() {
+        echo "Запуск двигателя";
+    }
 }
 
 // Интерфейс ElectricVehicle
 interface ElectricVehicle {
-  public function setBatteryLife($life);
-  public function getBatteryLife();
+    public function setBatteryLife($life);
+    public function getBatteryLife();
 }
 
 // Класс Car, наследующийся от Vehicle и реализующий ElectricVehicle
 class Car extends Vehicle implements ElectricVehicle {
-  private $batteryLife;
+    private $batteryLife;
 
-  // Реализация метода getInfo()
-  public function getInfo() {
-    return "Марка: " . $this->brand . ", Модель: " . $this->model;
-  }
+    public function setBrand($brand) {
+        $this->brand = $brand;
+    }
 
-  // Реализация метода setBatteryLife()
-  public function setBatteryLife($life) {
-    $this->batteryLife = $life;
-  }
+    public function getBrand() {
+        return $this->brand;
+    }
 
-  // Реализация метода getBatteryLife()
-  public function getBatteryLife() {
-    return $this->batteryLife;
-  }
+    public function setModel($model) {
+        $this->model = $model;
+    }
+
+    public function getModel() {
+        return $this->model;
+    }
+
+    // Реализация метода getInfo()
+    public function getInfo() {
+        return "Марка: " . $this->getBrand() . ", Модель: " . $this->getModel();
+    }
+
+    // Реализация метода setBatteryLife()
+    public function setBatteryLife($life) {
+        $this->batteryLife = $life;
+    }
+
+    // Реализация метода getBatteryLife()
+    public function getBatteryLife() {
+        return $this->batteryLife;
+    }
 }
 
 // Создаем объект класса Car
 $electricCar = new Car();
-$electricCar->brand = "Tesla";
-$electricCar->model = "Model S";
+$electricCar->setBrand("Tesla");
+$electricCar->setModel("Model S");
 
 // Устанавливаем значение заряда батареи и выводим его на экран
 $electricCar->setBatteryLife(80);
@@ -213,86 +230,113 @@ echo "Результат деления: " . $calculator->getLastResult() . "<br
 
 // Абстрактный класс банковского счета
 abstract class BankAccount {
-  protected float $balance;
-  protected string $ownerName;
+    protected float $balance;
+    protected string $ownerName;
 
-  public function __construct(string $ownerName, float $balance = 0) {
-    $this->balance = $balance;
-    $this->ownerName = $ownerName;
-  }
+    public function __construct(string $ownerName, float $balance = 0) {
+        $this->balance = $balance;
+        $this->ownerName = $ownerName;
+    }
 
-  public function getBalance(): float {
-    return $this->balance;
-  }
+    public function getBalance(): float {
+        return $this->balance;
+    }
 
-  public function deposit(float $amount): void {
-    $this->balance += $amount;
-  }
+    public function deposit(float $amount): void {
+        $this->balance += $amount;
+    }
 
-  abstract public function withdraw(float $amount): void;
+    abstract public function withdraw(float $amount): void;
+
+    public function transferTo(float $amount, BankAccount $account): void {
+        if ($this->balance - $amount >= 0) {
+            $this->balance -= $amount;
+            $account->deposit($amount);
+        } else {
+            throw new Exception("Недостаточно средств");
+        }
+    }
+
+    public function getInfo(): string {
+        return "Счет № {$this->ownerName}<br>" .
+            "Баланс: {$this->balance} руб.";
+    }
 }
 
 // Класс для чекового счета
 class CheckingAccount extends BankAccount {
-  private float $fee;
+    private float $fee;
 
-  public function __construct(string $ownerName, float $balance = 0, float $fee = 0) {
-    parent::__construct($ownerName, $balance);
-    $this->fee = $fee;
-  }
+    public function __construct(string $ownerName, float $balance = 0, float $fee = 0) {
+        parent::__construct($ownerName, $balance);
+        $this->fee = $fee;
+    }
 
-  public function withdraw(float $amount): void {
-    $this->balance -= $amount + $this->fee;
-  }
+    public function withdraw(float $amount): void {
+        $this->balance -= $amount + $this->fee;
+    }
+
+    public function getFee(): float {
+        return $this->fee;
+    }
+
+    public function setFee(float $fee): void {
+        $this->fee = $fee;
+    }
+
+    public function getInfo(): string {
+        return parent::getInfo() . "<br>" .
+            "Комиссия: {$this->fee} руб.";
+    }
 }
 
 // Класс для сберегательного счета
 class SavingsAccount extends BankAccount {
-  private float $interestRate;
+    private float $interestRate;
 
-  public function __construct(string $ownerName, float $balance = 0, float $interestRate = 0) {
-    parent::__construct($ownerName, $balance);
-    $this->interestRate = $interestRate;
-  }
-
-  public function withdraw(float $amount): void {
-    if ($this->balance - $amount >= 0) {
-      $this->balance -= $amount;
-    } else {
-      throw new Exception("Недостаточно средств");
+    public function __construct(string $ownerName, float $balance = 0, float $interestRate = 0) {
+        parent::__construct($ownerName, $balance);
+        $this->interestRate = $interestRate;
     }
-  }
 
-  public function addInterest(): void {
-    $this->balance += $this->balance * ($this->interestRate / 100);
-  }
+    public function withdraw(float $amount): void {
+        if ($this->balance - $amount >= 0) {
+            $this->balance -= $amount;
+        } else {
+            throw new Exception("Недостаточно средств");
+        }
+    }
+
+    public function addInterest(): void {
+        $this->balance += $this->balance * ($this->interestRate / 100);
+    }
+
+    public function getInfo(): string {
+        return parent::getInfo() . "<br>" .
+            "Процентная ставка: {$this->interestRate}%";
+    }
 }
 
 // Интерфейс для перевода денег с одного счета на другой
 interface Transferable {
-  public function transfer(float $amount, BankAccount $account): void;
+    public function transfer(float $amount, BankAccount $account): void;
 }
 
 // Класс для банка
 class Bank {
-  private array $accounts;
+    private array $accounts;
 
-  public function __construct() {
-    $this->accounts = [];
-  }
+    public function __construct() {
+        $this->accounts = [];
+    }
 
-  public function addAccount(BankAccount $account): void {
-    $this->accounts[] = $account;
-  }
+    public function addAccount(BankAccount $account): void {
+        $this->accounts[] = $account;
+    }
 
-  public function transfer(float $amount, BankAccount $account1, BankAccount $account2): void {
-    $account1->withdraw($amount);
-    $account2->deposit($amount);
-  }
-
-  public function getAccounts(): array {
-    return $this->accounts;
-  }
+    public function transfer(float $amount, BankAccount $account1, BankAccount $account2): void {
+        $account1->transfer($amount, $account2);
+    }
 }
 
 // Создаем объекты счетов
@@ -300,13 +344,23 @@ $checking = new CheckingAccount("Иван Сергеев", 1000, 10);
 $savings = new SavingsAccount("Анна Петрова", 5000, 5);
 
 // Выводим информацию о счетах до операций
-echo $checking->getInfo() . "<br>";
-echo $savings->getInfo() . "<br>";
+if ($checking instanceof CheckingAccount) {
+    echo $checking->getInfo() . "<br>";
+}
+
+if ($savings instanceof SavingsAccount) {
+    echo $savings->getInfo() . "<br>";
+}
 
 // Переводим деньги со сберегательного счета на текущий
-$savings->transferTo($checking, 2000);
+$savings->transferTo(2000, $checking);
 
 // Выводим информацию о счетах после операций
-echo $checking->getInfo() . "<br>";
-echo $savings->getInfo() . "<br>";
+if ($checking instanceof CheckingAccount) {
+    echo $checking->getInfo() . "<br>";
+}
+
+if ($savings instanceof SavingsAccount) {
+    echo $savings->getInfo() . "<br>";
+}
 ```
