@@ -27,6 +27,8 @@
 Оно должно быть указано перед объявлением свойства или метода.
 
 ```php
+<?php
+
 class User {
     private static int $count = 0;
 
@@ -113,6 +115,7 @@ echo "Количество созданных объектов: " . Rectangle::g
 
 
 ```php
+<?php
 class Person {
   // Статическое свойство для подсчета количества созданных объектов
   private static int $count = 0;

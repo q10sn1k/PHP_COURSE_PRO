@@ -45,49 +45,72 @@ echo Calculator::divide(10, 0); // генерирует исключение
 
 ## Задача 2
 
-Реализуйте класс BankAccount, у которого будет статическое свойство interestRate для хранения процентной ставки по счету, а также методы setInterestRate и getInterestRate для установки и получения значения процентной ставки соответственно.
+Написать класс CheckingAccount, который наследует абстрактный класс BankAccount и расширяет его функциональность добавлением комиссии за снятие денег с чекового счета.\
+Класс должен иметь методы для установки/изменения значения комиссии и получения информации о счете, включая текущий баланс и размер комиссии.\
+Также требуется написать примеры использования методов класса.
 
 ## Решение
 
 ```php
-class BankAccount {
-  protected float $balance;
-  protected string $ownerName;
-  protected static float $interestRate = 0;
+<?php
 
-  public function __construct(string $ownerName, float $balance = 0) {
-    $this->balance = $balance;
-    $this->ownerName = $ownerName;
-  }
+// Абстрактный класс банковского счета
+abstract class BankAccount {
+    protected float $balance;
+    protected string $ownerName;
 
-  public function getBalance(): float {
-    return $this->balance;
-  }
+    public function __construct(string $ownerName, float $balance = 0) {
+        $this->balance = $balance;
+        $this->ownerName = $ownerName;
+    }
 
-  public function deposit(float $amount): void {
-    $this->balance += $amount;
-  }
+    public function getBalance(): float {
+        return $this->balance;
+    }
 
-  abstract public function withdraw(float $amount): void;
+    public function deposit(float $amount): void {
+        $this->balance += $amount;
+    }
 
-  public static function setInterestRate(float $rate): void {
-    self::$interestRate = $rate;
-  }
-
-  public static function getInterestRate(): float {
-    return self::$interestRate;
-  }
+    abstract public function withdraw(float $amount): void;
 }
 
+// Класс для чекового счета
+class CheckingAccount extends BankAccount {
+    private float $fee;
 
-$account1 = new BankAccount("Иван Сергеев", 1000);
-$account2 = new BankAccount("Анна Петрова", 5000);
+    public function __construct(string $ownerName, float $balance = 0, float $fee = 0) {
+        parent::__construct($ownerName, $balance);
+        $this->fee = $fee;
+    }
 
-BankAccount::setInterestRate(3);
+    public function withdraw(float $amount): void {
+        $this->balance -= $amount + $this->fee;
+    }
 
-echo "Процентная ставка: " . BankAccount::getInterestRate() . "<br>";
-echo "Баланс счета 1: " . $account1->getBalance() . "<br>";
-echo "Баланс счета 2: " . $account2->getBalance() . "<br>";
+    public function getFee(): float {
+        return $this->fee;
+    }
+
+    public function setFee(float $fee): void {
+        $this->fee = $fee;
+    }
+
+    public function getInfo(): string {
+        return "Счет № {$this->ownerName}<br>" .
+            "Баланс: {$this->balance} руб.<br>" .
+            "Комиссия: {$this->fee} руб.";
+    }
+}
+
+$checking = new CheckingAccount("Иван Сергеев", 1000, 10);
+echo $checking->getInfo() . "<br>"; // Счет № Иван Сергеев<br>Баланс: 1000 руб.<br>Комиссия: 10 руб.
+
+$checking->withdraw(100);
+echo $checking->getInfo() . "<br>"; // Счет № Иван Сергеев<br>Баланс: 890 руб.<br>Комиссия: 10 руб.
+
+$checking->setFee(15);
+echo $checking->getInfo() . "<br>"; // Счет № Иван Сергеев<br>Баланс: 890 руб.<br>Комиссия: 15 руб.
 
 ```
 
