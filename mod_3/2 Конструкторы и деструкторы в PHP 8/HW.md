@@ -9,6 +9,8 @@
 ## Решение
 
 ```php
+<?php
+
 class Car {
   // Свойства класса
   public $model;
@@ -52,27 +54,29 @@ echo $car->getInfo();
 ## Решение
 
 ```php
+<?php
+
 class BankAccount {
-  // Свойства класса
-  public $balance;
+    // Свойства класса
+    public $balance;
 
-  // Конструктор
-  public function __construct($balance) {
-    $this->balance = $balance;
-  }
-
-  // Методы класса
-  public function deposit($amount) {
-    $this->balance += $amount;
-  }
-
-  public function withdraw($amount) {
-    if ($this->balance >= $amount) {
-      $this->balance -= $amount;
-    } else {
-      echo "Недостаточно средств на счете";
+    // Конструктор
+    public function __construct($balance) {
+        $this->balance = $balance;
     }
-  }
+
+    // Методы класса
+    public function deposit($amount) {
+        $this->balance += $amount;
+    }
+
+    public function withdraw($amount) {
+        if ($this->balance >= $amount) {
+            $this->balance -= $amount;
+        } else {
+            echo "Недостаточно средств на счете";
+        }
+    }
 }
 
 // Создадим объект класса
@@ -85,10 +89,9 @@ echo "Баланс счета после пополнения: " . $bankAccount-
 
 $bankAccount->withdraw(200);
 echo "Баланс счета после снятия: " . $bankAccount->balance . "<br>";
-
 $bankAccount->withdraw(2000);
+echo  "<br>";
 echo "Баланс счета после попытки снятия недостаточной суммы: " . $bankAccount->balance;
-   
 
 ```
 
@@ -101,6 +104,8 @@ echo "Баланс счета после попытки снятия недос�
 ## Решение
 
 ```php
+<?php
+
 class Book {
   // Свойства класса
   public $title;
@@ -143,6 +148,8 @@ echo $book->getInfo();
 ## Решение
 
 ```php
+<?php
+
 class Circle {
   // Свойства класса
   public $radius;
