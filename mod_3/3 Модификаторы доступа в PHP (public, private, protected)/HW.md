@@ -10,6 +10,8 @@
 ## Решение
 
 ```php
+<?php
+
 class Calculator {
   // Защищенные свойства класса
   protected $num1;
@@ -79,6 +81,8 @@ echo "Точность вычислений: " . $scientificCalculator->getPreci
 ## Решение
 
 ```php
+<?php
+
 class BankAccount {
     private $balance;
 
