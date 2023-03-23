@@ -8,6 +8,8 @@
 ## Решение
 
 ```php
+<?php
+
 class Car {
   // Свойства класса
   public $model;
@@ -44,6 +46,8 @@ echo $car->getInfo();
 ## Решение
 
 ```php
+<?php
+
 class Calculator {
   // Методы класса
   public function add($a, $b) {
@@ -81,6 +85,8 @@ echo "Деление: " . $calculator->divide(5, 3);
 ## Решение
 
 ```php
+<?php
+
 class BankAccount {
   // Свойства класса
   private $balance = 0;
@@ -94,7 +100,7 @@ class BankAccount {
     if ($this->balance >= $amount) {
       $this->balance -= $amount;
     } else {
-      echo "Недостаточно средств на счете";
+      echo "Недостаточно средств на счете ";
     }
   }
 
@@ -125,6 +131,8 @@ echo "Баланс: " . $bankAccount->getBalance();
 ## Решение
 
 ```php
+<?php
+
 class Book {
   // Свойства класса
   public $title;
@@ -159,6 +167,8 @@ echo $book->getInfo();
 ## Решение
 
 ```php
+<?php
+
 class Circle {
   // Свойства класса
   public $radius;
